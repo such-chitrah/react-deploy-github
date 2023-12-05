@@ -1,0 +1,14 @@
+.subtask-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .text-container {
+    flex: 1; /* Occupy remaining space */
+
+  }
+
+  .input-container {
+    display: flex;
+    gap: 10px; /* Adjust space between inputs */
+  }

@@ -1,0 +1,10 @@
+/* Header.css */
+
+.header {
+  text-align: center;
+  background-color: white; /* Set the background color to white */
+  padding: 20px; /* Add padding as needed */
+  color: black; /* Set the text color to black */
+  max-width: 100%;
+}
+  

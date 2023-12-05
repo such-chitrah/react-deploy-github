@@ -1,24 +1,28 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
+import ToDoList from './pages/ToDoListView';
+import PomodoroView from './pages/PomodoroTimerView';
+import TaskManager from './components/Task/TaskManager';
 import './App.css';
 
 function App() {
+  const [count, setCount] = useState(0);
+
+  const toggleCount = (value) => {
+    setCount(value);
+  };
   return (
+    <main>
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      <div className='List1'>
+          {count === 0 ? <TaskManager toggleCount={toggleCount} /> : null}
+          {count === 1 ? <PomodoroView /> : null}
+        </div>
+      <Footer />
     </div>
+    </main>
   );
 }
 

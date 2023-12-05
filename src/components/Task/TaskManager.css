@@ -1,0 +1,32 @@
+.list-group{
+    width: 500px; /* Adjust the width as needed */
+  }
+
+  .TaskList{
+    padding-top: 50px;
+    max-width: 405px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .new-line {
+    display: block;
+     width: 600px
+  }
+
+  .btn {
+    white-space: nowrap; /* Prevent text from wrapping */
+    min-width: 100px; /* Adjust the minimum width as needed */
+    font-size: 12px;
+    background-color: blue; /* Set the background color to blue */
+     color: white;
+     align-items: right;
+     
+
+    /* Additional styles for the button */
+  }
+
+  .d-flex{
+    text-align: center;
+    width: 100%;
+  }
