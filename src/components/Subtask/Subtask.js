@@ -1,68 +1,100 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import SubtaskForm from './SubtaskForm';
-import './Subtask.css'
+import './Subtask.css';
 
-const Subtask = ({ taskId }) => {
-  const [subtasks, setSubtasks] = useState([]);
+const Subtask = ({ taskId, task, tasks, setTasks, index, workMinutes, breakMinutes }) => {
 
-  useEffect(() => {
-    // Retrieve subtasks from local storage on component mount
-    const storedSubtasks = JSON.parse(localStorage.getItem(`subtasks_${taskId}`)) || [];
-    setSubtasks(storedSubtasks);
-  }, [taskId]);
+  const { subtasks } = task;
 
-  const handleAddSubtask = (subtaskText, workMinutes, breakMinutes) => {
-    const updatedSubtasks = [
-      ...subtasks,
-      { text: subtaskText, workMinutes: parseInt(workMinutes) || 0, breakMinutes: parseInt(breakMinutes) || 0 }
-    ];
-    setSubtasks(updatedSubtasks);
-    // Store updated subtasks in local storage
-    localStorage.setItem(`subtasks_${taskId}`, JSON.stringify(updatedSubtasks));
+  const handleAddSubtask = (subtaskText) => {
+    console.log(taskId)
+    const updatedTasks = tasks.map((task) => {
+
+      if (task.taskId === taskId) {
+        const updatedSubtasks = [
+          ...task.subtasks,
+          {
+            subtaskId: Date.now(), // Generating unique ID for subtask
+            subtaskName: subtaskText,
+            workMinutes: parseInt(workMinutes) || 25,
+            breakMinutes: parseInt(breakMinutes) || 5,
+          },
+        ];
+
+        return {
+          ...task,
+          subtasks: updatedSubtasks,
+        };
+      }
+      return task;
+    });
+
+    setTasks(updatedTasks);
+    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
   };
+
 
   const handleWorkMinutesChange = (value, subtaskIndex) => {
     const updatedSubtasks = [...subtasks];
-    updatedSubtasks[subtaskIndex].workMinutes = parseInt(value) || 0;
-    setSubtasks(updatedSubtasks);
-    localStorage.setItem(`subtasks_${taskId}`, JSON.stringify(updatedSubtasks));
+    updatedSubtasks[subtaskIndex].workMinutes = parseInt(value) || 25;
+    const updatedTasks = tasks.map((task, idx) => {
+      if (idx === taskId) {
+        return {
+          ...task,
+          subtasks: updatedSubtasks,
+        };
+      }
+      return task;
+    });
+    setTasks(updatedTasks);
+    localStorage.setItem(`tasks`, JSON.stringify(updatedTasks));
   };
 
   const handleBreakMinutesChange = (value, subtaskIndex) => {
     const updatedSubtasks = [...subtasks];
-    updatedSubtasks[subtaskIndex].breakMinutes = parseInt(value) || 0;
-    setSubtasks(updatedSubtasks);
-    localStorage.setItem(`subtasks_${taskId}`, JSON.stringify(updatedSubtasks));
+    updatedSubtasks[subtaskIndex].breakMinutes = parseInt(value) || 5;
+    const updatedTasks = tasks.map((task, idx) => {
+      if (idx === taskId) {
+        return {
+          ...task,
+          subtasks: updatedSubtasks,
+        };
+      }
+      return task;
+    });
+    setTasks(updatedTasks);
+    localStorage.setItem(`tasks`, JSON.stringify(updatedTasks));
   };
 
   const renderSubtaskList = () => {
     return (
       <div>
         <ul className="list-group">
-          {subtasks.map((subtask, index) => (
-            <li key={index} className="list-group-item">
+          {subtasks.map((subtask, subtaskIndex) => (
+            <li key={subtaskIndex} className="list-group-item">
               <div className="subtask-container">
-  <div className="text-container">
-  <p><strong>{subtask.text}</strong></p>
-  </div>
-  <div className="input-container">
-    <input
-      type="number"
-      placeholder="Work Minutes"
-      value={subtask.workMinutes || 25}
-      onChange={(e) => handleWorkMinutesChange(e.target.value, index)}
-      style={{ width: '60px' }}
-    />
-    <input
-      type="number"
-      placeholder="Break Minutes"
-      value={subtask.breakMinutes || 5}
-      onChange={(e) => handleBreakMinutesChange(e.target.value, index)}
-      style={{ width: '60px' }}
-    />
-  </div>
-</div>
-
+                <div className="text-container">
+                  <p>
+                    <strong>{subtask.subtaskName}</strong>
+                  </p>
+                </div>
+                <div className="input-container">
+                  <input
+                    type="number"
+                    placeholder="Work Minutes"
+                    value={subtask.workMinutes || workMinutes || 25} // Use subtask's value if available, else use prop value
+                    onChange={(e) => handleWorkMinutesChange(e.target.value, subtaskIndex)}
+                    style={{ width: '60px' }}
+                  />
+                  <input
+                    type="number"
+                    placeholder="Break Minutes"
+                    value={subtask.breakMinutes || breakMinutes || 5} // Use subtask's value if available, else use prop value
+                    onChange={(e) => handleBreakMinutesChange(e.target.value, subtaskIndex)}
+                    style={{ width: '60px' }}
+                  />
+                </div>
+              </div>
             </li>
           ))}
         </ul>
@@ -71,11 +103,7 @@ const Subtask = ({ taskId }) => {
     );
   };
 
-  return (
-    <div>
-      {renderSubtaskList()}
-    </div>
-  );
+  return <div>{renderSubtaskList()}</div>;
 };
 
 export default Subtask;

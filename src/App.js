@@ -5,6 +5,7 @@ import ToDoList from './pages/ToDoListView';
 import PomodoroView from './pages/PomodoroTimerView';
 import TaskManager from './components/Task/TaskManager';
 import './App.css';
+import ToDoListView from './pages/ToDoListView';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -12,6 +13,7 @@ function App() {
   const toggleCount = (value) => {
     setCount(value);
   };
+
   return (
     <main>
     <div className="App">
@@ -20,7 +22,7 @@ function App() {
           {count === 0 ? <TaskManager toggleCount={toggleCount} /> : null}
           {count === 1 ? <PomodoroView /> : null}
         </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
     </main>
   );
